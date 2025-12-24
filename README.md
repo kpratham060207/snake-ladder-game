@@ -1,16 +1,6 @@
 Snake & Ladder Game
 A classic Snake and Ladder board game implementation in C++. This console-based application allows two players to compete against each other, featuring randomized dice rolls and automatic position updates for snakes and ladders.
 
-Table of Contents
-Features
-
-Prerequisites
-
-How to Run
-
-How to Play
-
-Game Logic
 
 Features
 Two-Player Mode: Input custom names for both players.
@@ -30,29 +20,7 @@ Linux: GCC.
 
 Mac: Clang (via Xcode command line tools).
 
-How to Run
-Clone the repository:
 
-Bash
-git clone https://github.com/your-username/snake-ladder-cpp.git
-Navigate to the directory:
-
-Bash
-cd snake-ladder-cpp
-Compile the code:
-
-Bash
-g++ Snake&ladder.cpp -o snakegame
-Run the executable:
-
-Windows:
-
-Bash
-snakegame.exe
-Linux/Mac:
-
-Bash
-./snakegame
 How to Play
 Launch the application.
 
