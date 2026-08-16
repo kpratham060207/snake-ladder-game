@@ -1,0 +1,6 @@
+# Compiled C++ binary and the temporary directory used while building it
+.build/
+snake-ladder
+
+# macOS folder metadata
+.DS_Store

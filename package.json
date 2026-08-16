@@ -1,0 +1,11 @@
+{
+  "name": "snake-and-ladder-game",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A two-player Snake and Ladder game for the browser, plus the original C++ console version.",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8090",
+    "test": "node game-core.test.js"
+  }
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A polished two-player Snake and Ladder browser game."
+    />
+    <title>Snake & Ladder</title>
+    <!--
+      The favicon is an SVG written directly into the tag as a data URI. This
+      avoids a separate image file (and the 404 the browser logs without one):
+      a dark rounded tile with a yellow ladder and a coral snake.
+    -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317342d'/%3E%3Cg stroke='%23f1bc52' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M9 26 L15 7'/%3E%3Cpath d='M14 27 L20 8'/%3E%3Cpath d='M10.6 21 L16.4 22.4'/%3E%3Cpath d='M12 16 L17.8 17.4'/%3E%3Cpath d='M13.4 11 L19.2 12.4'/%3E%3C/g%3E%3Cpath d='M24 7 C19 11 28 15 23 19 C19 22 24 24 24 26' fill='none' stroke='%23ed745c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Snake and Ladder home">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>Snake <i>&</i> Ladder</span>
+        </a>
+        <button class="text-button" id="new-game-button" type="button">
+          <span aria-hidden="true">↻</span> New game
+        </button>
+      </header>
+
+      <main class="game-layout">
+        <section class="board-panel" aria-label="Game board">
+          <div class="board-header">
+            <div>
+              <p class="eyebrow">Race to the top</p>
+              <h1>Roll. Climb. <span>Don’t slide.</span></h1>
+            </div>
+            <div class="legend" aria-label="Board legend">
+              <span><i class="legend-dot ladder-dot"></i>Ladder</span>
+              <span><i class="legend-dot snake-dot"></i>Snake</span>
+            </div>
+          </div>
+
+          <div class="board-wrap">
+            <div class="board" id="board" aria-label="100-square game board"></div>
+            <svg
+              class="routes"
+              id="routes"
+              viewBox="0 0 1000 1000"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            ></svg>
+            <div class="tokens-layer" id="tokens-layer" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <aside class="game-sidebar">
+          <section class="turn-card">
+            <div class="turn-heading">
+              <div>
+                <p class="eyebrow">Current turn</p>
+                <h2 id="turn-name">Player 1</h2>
+              </div>
+              <span class="turn-token player-one" id="turn-token">P1</span>
+            </div>
+
+            <button class="dice-button" id="roll-button" type="button">
+              <span class="dice" id="dice" aria-label="Dice showing one">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </span>
+              <span>
+                <strong>Roll the dice</strong>
+                <small>or press the spacebar</small>
+              </span>
+            </button>
+            <p class="turn-message" id="turn-message">
+              The first player to reach 100 wins.
+            </p>
+          </section>
+
+          <section class="players-card" aria-label="Player positions">
+            <div class="section-title">
+              <h3>Players</h3>
+              <span id="round-label">Round 1</span>
+            </div>
+            <div class="player-row active" id="player-row-0">
+              <span class="player-avatar avatar-one" id="avatar-0">P1</span>
+              <div>
+                <strong id="player-name-0">Player 1</strong>
+                <small id="player-status-0">Ready to roll</small>
+              </div>
+              <b id="player-position-0">0</b>
+            </div>
+            <div class="player-row" id="player-row-1">
+              <span class="player-avatar avatar-two" id="avatar-1">P2</span>
+              <div>
+                <strong id="player-name-1">Player 2</strong>
+                <small id="player-status-1">Waiting</small>
+              </div>
+              <b id="player-position-1">0</b>
+            </div>
+          </section>
+
+          <section class="history-card">
+            <div class="section-title">
+              <h3>Game log</h3>
+              <button id="clear-log-button" type="button">Clear</button>
+            </div>
+            <ol class="game-log" id="game-log">
+              <li><span>●</span> Game ready. Roll to begin!</li>
+            </ol>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <dialog class="setup-dialog" id="setup-dialog">
+      <form method="dialog" id="setup-form">
+        <button class="dialog-close" id="dialog-close" type="button" aria-label="Close">×</button>
+        <p class="eyebrow">New match</p>
+        <h2>Who’s climbing today?</h2>
+        <p class="dialog-copy">Choose two names and race to square 100.</p>
+        <label>
+          <span><i class="input-dot player-one"></i>Player one</span>
+          <input id="player-one-input" maxlength="16" value="Player 1" autocomplete="off" />
+        </label>
+        <label>
+          <span><i class="input-dot player-two"></i>Player two</span>
+          <input id="player-two-input" maxlength="16" value="Player 2" autocomplete="off" />
+        </label>
+        <button class="start-button" type="submit">Start the game <span>→</span></button>
+      </form>
+    </dialog>
+
+    <dialog class="winner-dialog" id="winner-dialog">
+      <div class="confetti" aria-hidden="true">✦　●　✧　▲　✦</div>
+      <span class="winner-crown" aria-hidden="true">♛</span>
+      <p class="eyebrow">We have a winner</p>
+      <h2 id="winner-name">Player 1 wins!</h2>
+      <p id="winner-copy">You made it to square 100.</p>
+      <button class="start-button" id="play-again-button" type="button">
+        Play again <span>↻</span>
+      </button>
+    </dialog>
+
+    <script type="module" src="game.js"></script>
+  </body>
+</html>

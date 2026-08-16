@@ -1,183 +1,96 @@
-#include<iostream>
-#include<time.h>
-using namespace std;
-int main()
-{
-	int a,b,user_pos_a=0,user_pos_b=0,flag=0;
-    string user_a,user_b;
-	srand(time(0));
-	//no=rand()%6+1;
+#include <array>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <random>
+#include <string>
 
-    cout<<"\nWelcome To Snake And Ladder Game!!!";
-    cout<<"\n\nEnter User 1 Name = ";
-    cin>>user_a;
-    cout<<"\nEnter User 2 Name = ";
-    cin>>user_b;
+namespace {
+constexpr int kWinningSquare = 100;
 
-    while(true)
-    {
-        cout<<endl<<endl<<user_a<<"'s Chance";
-        a=rand()%6+1;
-        cin.get();
-        cout<<"\nDice Rolled = "<<a;
-        user_pos_a+=a;
-        if(user_pos_a>100)
-            user_pos_a-=a;
-        cout<<"\nYour Position = "<<user_pos_a;
+const std::map<int, int> kLadders{
+    {3, 27}, {8, 30}, {28, 84}, {51, 67}, {71, 99}, {80, 99},
+};
 
-        if(user_pos_a==3)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=27;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==8)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=30;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==28)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=84;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==51)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=67;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==71)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=99;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==80)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_a=99;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==32)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_a=10;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==36)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_a=6;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==48)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_a=26;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==88)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_a=24;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
-        else if(user_pos_a==95)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_a=56;
-            cout<<"\nYour Position = "<<user_pos_a;
-        }
+const std::map<int, int> kSnakes{
+    {32, 10}, {36, 6}, {48, 26}, {88, 24}, {95, 56},
+};
 
-        if(user_pos_a==100)
-        {
-            cout<<endl<<user_a<<" Wins!!!";
-            break;
-        }
+struct Player {
+    std::string name;
+    int position = 0;
+};
 
-        cout<<endl<<endl<<user_b<<"'s Chance";
-        b=rand()%6+1;
-        cin.get();
-        cout<<"\nDice Rolled = "<<b;
-        user_pos_b+=b;
-        if(user_pos_b>100)
-            user_pos_b-=b;
-        cout<<"\nYour Position = "<<user_pos_b;
+int rollDice() {
+    static std::mt19937 engine(std::random_device{}());
+    static std::uniform_int_distribution<int> distribution(1, 6);
+    return distribution(engine);
+}
 
-        if(user_pos_b==3)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=27;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==8)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=30;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==28)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=84;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==51)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=67;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==71)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=99;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==80)
-        {
-            cout<<"\nYou landed on ladder.";
-            user_pos_b=99;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==32)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_b=10;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==36)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_b=6;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==48)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_b=26;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==88)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_b=24;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
-        else if(user_pos_b==95)
-        {
-            cout<<"\nYou landed on snake.";
-            user_pos_b=56;
-            cout<<"\nYour Position = "<<user_pos_b;
-        }
+void waitForEnter() {
+    std::cout << "Press Enter to roll...";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
-        if(user_pos_b==100)
-        {
-            cout<<endl<<user_b<<" Wins!!!";
-            break;
+void applyBoardEffect(Player& player) {
+    if (const auto ladder = kLadders.find(player.position);
+        ladder != kLadders.end()) {
+        std::cout << "  Ladder! " << player.position << " -> "
+                  << ladder->second << '\n';
+        player.position = ladder->second;
+        return;
+    }
+
+    if (const auto snake = kSnakes.find(player.position);
+        snake != kSnakes.end()) {
+        std::cout << "  Snake! " << player.position << " -> "
+                  << snake->second << '\n';
+        player.position = snake->second;
+    }
+}
+
+bool takeTurn(Player& player) {
+    std::cout << "\n" << player.name << "'s turn\n";
+    waitForEnter();
+
+    const int roll = rollDice();
+    std::cout << "  Rolled: " << roll << '\n';
+
+    if (player.position + roll > kWinningSquare) {
+        std::cout << "  Exact roll required. You remain on "
+                  << player.position << ".\n";
+        return false;
+    }
+
+    player.position += roll;
+    std::cout << "  Position: " << player.position << '\n';
+    applyBoardEffect(player);
+
+    return player.position == kWinningSquare;
+}
+}  // namespace
+
+int main() {
+    std::cout << "Welcome to Snake & Ladder!\n\n";
+
+    std::array<Player, 2> players;
+    for (std::size_t index = 0; index < players.size(); ++index) {
+        std::cout << "Enter Player " << index + 1 << " name: ";
+        std::getline(std::cin, players[index].name);
+        if (players[index].name.empty()) {
+            players[index].name = "Player " + std::to_string(index + 1);
         }
     }
+
+    std::size_t currentPlayer = 0;
+    while (true) {
+        if (takeTurn(players[currentPlayer])) {
+            std::cout << "\n" << players[currentPlayer].name
+                      << " wins! Congratulations!\n";
+            break;
+        }
+        currentPlayer = (currentPlayer + 1) % players.size();
+    }
+
+    return 0;
 }

@@ -1,68 +1,79 @@
-Snake & Ladder Game
-A classic Snake and Ladder board game implementation in C++. This console-based application allows two players to compete against each other, featuring randomized dice rolls and automatic position updates for snakes and ladders.
+# Snake & Ladder
 
+A two-player Snake and Ladder game. Play it in the browser with an animated
+board, or compile the original C++ console version.
 
-Features
-Two-Player Mode: Input custom names for both players.
+## Play in the browser
 
-Randomized Gameplay: Uses srand(time(0)) to ensure unique dice rolls every game.
+You only need Python 3, which macOS and most Linux systems already have. No
+packages to install.
 
-Interactive Interface: Players press Enter to roll the dice.
+```sh
+python3 -m http.server 8090
+```
 
-Winning Logic: Exact roll required to reach position 100 to win; overshooting subtracts the dice value.
+Then open [http://localhost:8090](http://localhost:8090).
 
-Prerequisites
-To run this game, you need a C++ compiler installed on your system.
+Any free port works. If you see somebody else's page, that port is already in
+use by another project — pick a different number and try again.
 
-Windows: MinGW or Visual Studio.
+Enter both player names, then roll by clicking the dice or pressing the
+spacebar. The game log on the right records every roll, climb and slide.
 
-Linux: GCC.
+## Play in the terminal (C++)
 
-Mac: Clang (via Xcode command line tools).
+Requires a C++17 compiler (Clang on macOS, GCC on Linux, MinGW or Visual Studio
+on Windows).
 
+```sh
+clang++ -std=c++17 -Wall -Wextra -pedantic "Snake&ladder.cpp" -o snake-ladder
+./snake-ladder
+```
 
-How to Play
-Launch the application.
+## Running the tests
 
-Enter the name for User 1 and User 2 when prompted.
+The tests cover the game rules: ladders, snakes, the exact-roll finish, invalid
+input, and a 500-game simulation checking that a game always ends and no player
+ever leaves the board.
 
-The game will announce whose turn it is.
+With Node.js:
 
-Press Enter to roll the dice.
+```sh
+node game-core.test.js
+```
 
-The game will display the rolled number and your new position on the board.
+Without Node.js, any JavaScript engine works. On macOS you already have one:
 
-If you land on a Ladder, you move up automatically.
+```sh
+/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Helpers/jsc -m game-core.test.js
+```
 
-If you land on a Snake, you slide down automatically.
+## Rules
 
-The first player to reach exactly 100 wins!
+- Two players take alternating turns rolling one dice.
+- You must land on square 100 **exactly** to win. A roll that would take you
+  past 100 is wasted and you stay where you are.
+- Landing on a ladder carries you up. Landing on a snake head drags you down.
 
-Game Logic (Map)
-The game board includes the following hardcoded shortcuts and traps:
+| Ladders (up) | Snakes (down) |
+| ------------ | ------------- |
+| 3 → 27       | 32 → 10       |
+| 8 → 30       | 36 → 6        |
+| 28 → 84      | 48 → 26       |
+| 51 → 67      | 88 → 24       |
+| 71 → 99      | 95 → 56       |
+| 80 → 99      |               |
 
-Ladders (Move Up)
+## Project structure
 
-3 -> 27
+| File                | Purpose                                                      |
+| ------------------- | ------------------------------------------------------------ |
+| `index.html`        | Page structure and dialogs                                    |
+| `styles.css`        | Board and sidebar styling, responsive down to phone screens   |
+| `game.js`           | Drawing, animation and turn handling                          |
+| `game-core.js`      | The game rules, with no browser code so they can be tested    |
+| `game-core.test.js` | Test suite for the rules                                      |
+| `Snake&ladder.cpp`  | C++17 console version                                         |
 
-8 -> 30
-
-28 -> 84
-
-51 -> 67
-
-71 -> 99
-
-80 -> 99
-
-Snakes (Move Down)
-
-32 -> 10
-
-36 -> 6
-
-48 -> 26
-
-88 -> 24
-
-95 -> 56
+The rules live in `game-core.js`, separate from the screen code in `game.js`.
+That split is what makes the rules testable without a browser.
